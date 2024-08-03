@@ -1,0 +1,89 @@
+package main
+
+import (
+	"bytes"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strconv"
+	"time"
+)
+
+func main() {
+	// Parameter untuk URL
+	shopID := "510526"
+	partnerID := 2001198
+	accessToken := "676c7172486e48475969667369415272"
+
+	// Menghitung timestamp
+	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
+
+	// URL dasar dan path
+	host := "https://partner.shopeemobile.com"
+	path := "/api/v2/product/boost_item"
+
+	// Partner Key
+	partnerKey := "b8ce4238aa31839609421c5a089fac3bb40086784131946ce73768386ed140b7"
+
+	// Menyusun baseString dan menghitung sign
+	baseString := fmt.Sprintf("%d%s%s%s%s", partnerID, path, timestamp, accessToken, shopID)
+	h := hmac.New(sha256.New, []byte(partnerKey))
+	h.Write([]byte(baseString))
+	sign := hex.EncodeToString(h.Sum(nil))
+	fmt.Println("Sign:", sign)
+
+	// Menyusun URL dengan parameter yang diberikan
+	url := fmt.Sprintf(
+		"%s%s?shop_id=%s&partner_id=%d&sign=%s&access_token=%s&timestamp=%s",
+		host, path, shopID, partnerID, sign, accessToken, timestamp,
+	)
+
+	fmt.Println("Request URL:", url)
+
+	// Data yang akan dikirim dalam request body
+	data := map[string]interface{}{
+		"item_id_list": []int64{23472429517, 25276496484, 172817313, 14566826335, 17971254545},
+	}
+
+	// Mengubah data ke dalam bentuk JSON
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println("Error marshalling JSON:", err)
+		return
+	}
+
+	// Membuat request baru dengan metode POST
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
+
+	// Menambahkan header Content-Type
+	req.Header.Set("Content-Type", "application/json")
+
+	// Membuat client dan melakukan request
+	client := &http.Client{Timeout: time.Second * 10}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error making request:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Menampilkan status dan response body
+	fmt.Println("Response status:", resp.Status)
+	if resp.StatusCode == http.StatusOK {
+		var result map[string]interface{}
+		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+			fmt.Println("Error decoding response:", err)
+			return
+		}
+		fmt.Println("Response body:", result)
+	} else {
+		fmt.Println("Request failed with status:", resp.Status)
+	}
+}
