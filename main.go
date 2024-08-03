@@ -471,8 +471,20 @@ func boostItemsPeriodically() {
 			logMessage("Error writing tokens to DB: %v\n", err)
 		}
 
-		logMessage("Boosting completed. Waiting for the next interval...\n")
-		time.Sleep(boostInterval)
+		// logMessage("Boosting completed. Waiting for the next interval...\n")
+		// time.Sleep(boostInterval)
+		logMessage("Boosting completed.")
+		logMessage("Waiting for the next interval...")
+
+		for remaining := boostInterval; remaining > 0; remaining -= time.Second {
+			hours := remaining / time.Hour
+			minutes := (remaining % time.Hour) / time.Minute
+			seconds := (remaining % time.Minute) / time.Second
+			fmt.Printf("\rBoosting will run again in... %02d hours %02d minutes %02d seconds", hours, minutes, seconds)
+			time.Sleep(time.Second)
+		}
+
+		fmt.Println()
 	}
 }
 

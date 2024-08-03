@@ -88,3 +88,63 @@
 
 2024/08/03 21:16:47 main.go:75: 03-08-2024 21:16:47.505 Boosting completed. Waiting for the next interval...
 
+2024/08/03 21:29:45 main.go:75: 03-08-2024 21:29:45.688 Worker 8: Processing shopID 877734680 (alias: SHP7)
+
+2024/08/03 21:29:45 main.go:75: 03-08-2024 21:29:45.688 Worker 6: Processing shopID 431165677 (alias: SHP4)
+
+2024/08/03 21:29:45 main.go:75: 03-08-2024 21:29:45.688 Worker 4: Processing shopID 95633757 (alias: SHP3)
+
+2024/08/03 21:29:45 main.go:75: 03-08-2024 21:29:45.689 Worker 2: Processing shopID 833596302 (alias: SHP6)
+
+2024/08/03 21:29:45 main.go:75: 03-08-2024 21:29:45.689 Worker 7: Processing shopID 957116027 (alias: SHP5)
+
+2024/08/03 21:29:45 main.go:75: 03-08-2024 21:29:45.689 Worker 3: Processing shopID 15114364 (alias: SHP2)
+
+2024/08/03 21:29:45 main.go:75: 03-08-2024 21:29:45.688 Worker 5: Processing shopID 510526 (alias: SHP1)
+
+2024/08/03 21:29:46 main.go:75: 03-08-2024 21:29:46.051 Response for shopID 15114364: map[error:product.error_busi message:reached shop's bump slot limit request_id:2c94d6668aa0d5cd6117a7a1d9ce8c21:020000771e87c7c2:01000032edfc5e7b response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:29:46 main.go:75: 03-08-2024 21:29:46.051 Response for shopID 431165677: map[error:product.error_busi message:reached shop's bump slot limit request_id:8449caf646a64d5b01b5cdf0aad1da21:0200000b8dccaa4f:010000be1c4caa79 response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:29:46 main.go:75: 03-08-2024 21:29:46.051 Response for shopID 510526: map[error:product.error_busi message:reached shop's bump slot limit request_id:04ce935a224e8f8788a63d6d6f69a521:02000075df66855b:010000d442967817 response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:29:46 main.go:75: 03-08-2024 21:29:46.051 Response for shopID 833596302: map[error:product.error_busi message:reached shop's bump slot limit request_id:e759a3448a2b581107196463d44e0a21:0200000af876ba1d:010000e5a79422ef response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:29:46 main.go:75: 03-08-2024 21:29:46.055 Response for shopID 95633757: map[error:product.error_busi message:reached shop's bump slot limit request_id:f3ffc59ec511459b400339d11f508021:020000436a027776:01000042d38a35e2 response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:29:46 main.go:75: 03-08-2024 21:29:46.064 Response for shopID 957116027: map[error:product.error_busi message:item status not normal or stock is 0 request_id:426c76a822e365b7faebf40b207b6121:0200009a3a94808d:010000f0af081ebd response:map[failure_list:[map[failed_reason:invalid item id item_id:1.8982920756e+10] map[failed_reason:invalid item id item_id:1.6732108417e+10] map[failed_reason:invalid item id item_id:2.507263135e+10] map[failed_reason:invalid item id item_id:6.714382954e+09] map[failed_reason:invalid item id item_id:6.114917503e+09]] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:29:46 main.go:75: 03-08-2024 21:29:46.078 Response for shopID 877734680: map[error:product.error_busi message:reached shop's bump slot limit request_id:0672fae5aa023c5950415ca6c718cb21:0200005db64850fe:0100001ff10e852c response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:29:47 main.go:75: 03-08-2024 21:29:47.631 Boosting completed.
+2024/08/03 21:29:47 main.go:75: 03-08-2024 21:29:47.631 Waiting for the next interval...
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:48.999 Worker 3: Processing shopID 877734680 (alias: SHP7)
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:48.999 Worker 2: Processing shopID 957116027 (alias: SHP5)
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:48.999 Worker 1: Processing shopID 833596302 (alias: SHP6)
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:48.999 Worker 6: Processing shopID 510526 (alias: SHP1)
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:48.999 Worker 7: Processing shopID 15114364 (alias: SHP2)
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:48.999 Worker 5: Processing shopID 95633757 (alias: SHP3)
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:48.999 Worker 8: Processing shopID 431165677 (alias: SHP4)
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:49.331 Response for shopID 833596302: map[error:product.error_busi message:reached shop's bump slot limit request_id:2b22f1cf907c93e2c22c281b428de221:0200003feec8a9f7:010000b493df19c7 response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:49.331 Response for shopID 15114364: map[error:product.error_busi message:reached shop's bump slot limit request_id:f7a274c2ccd570f25074149b952cb021:020000df255c898d:010000f89e42ff94 response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:49.331 Response for shopID 877734680: map[error:product.error_busi message:reached shop's bump slot limit request_id:893ae3a3b2ec394d1a810a062b650021:020000ec3d6d5f0a:010000ecbe9005bf response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:49.331 Response for shopID 431165677: map[error:product.error_busi message:reached shop's bump slot limit request_id:09bea72830682940bd10c247c4c17c21:020000916b92589a:010000e5bbd45f93 response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:49.331 Response for shopID 957116027: map[error:product.error_busi message:item status not normal or stock is 0 request_id:f727a94e0b20f947194e1a9d37f43b21:020000777a1d151f:010000768d32420b response:map[failure_list:[map[failed_reason:invalid item id item_id:1.6732108417e+10] map[failed_reason:invalid item id item_id:2.507263135e+10] map[failed_reason:invalid item id item_id:6.714382954e+09] map[failed_reason:invalid item id item_id:6.114917503e+09] map[failed_reason:invalid item id item_id:1.8982920756e+10]] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:49.331 Response for shopID 510526: map[error:product.error_busi message:reached shop's bump slot limit request_id:13a622a7bf589a1ae424a03df650e321:02000074f2f088b7:0100004a6be60c6e response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:33:49 main.go:75: 03-08-2024 21:33:49.331 Response for shopID 95633757: map[error:product.error_busi message:reached shop's bump slot limit request_id:894398c1dbe574bc8579e8114bcb3821:020000803da2ce0b:010000be938605ee response:map[failure_list:[] success_list:map[item_id_list:[]]]]
+
+2024/08/03 21:33:50 main.go:75: 03-08-2024 21:33:50.858 Boosting completed.
+2024/08/03 21:33:50 main.go:75: 03-08-2024 21:33:50.858 Waiting for the next interval...
