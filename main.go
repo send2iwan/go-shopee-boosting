@@ -62,8 +62,12 @@ func initLogger() {
 		fmt.Println("Error opening log file:", err)
 		os.Exit(1)
 	}
-	logger = log.New(file, "", log.LstdFlags)
-	logger.SetFlags(log.LstdFlags | log.Lshortfile)
+	// logger = log.New(file, "", log.LstdFlags)
+	// logger.SetFlags(log.LstdFlags | log.Lshortfile)
+	// logger = log.New(file, "", log.Lshortfile) // Mengatur flag hanya untuk menambahkan informasi file dan nomor baris
+	// logger.SetFlags(log.Lshortfile)            // Mengatur flag hanya untuk menambahkan informasi file dan nomor baris
+	logger = log.New(file, "", 0) // Mengatur flag menjadi 0 untuk tidak menambahkan cap waktu
+	logger.SetFlags(0)            // Mengatur flag menjadi 0 untuk tidak menambahkan cap waktu atau informasi lainnya
 }
 
 // Fungsi untuk mencetak log dengan waktu dan menyimpan ke file
@@ -347,7 +351,7 @@ func boostItem(shopID, partnerID int, partnerKey, accessToken string, itemIDList
 func worker(id int, jobs <-chan int, results chan<- error, partnerID int, partnerKey, code string, shopItems map[int][]int64, tokens map[int]map[string]string, db *sql.DB) {
 	for shopID := range jobs {
 		alias := shopAlias[shopID]
-		logMessage("Worker %d: Processing shopID %d (alias: %s)\n", id, shopID, alias)
+		logMessage("Worker %d: Processing shopID %d (alias: %s)", id, shopID, alias)
 		itemIDList := shopItems[shopID]
 
 		var accessToken, refreshToken string
@@ -361,7 +365,7 @@ func worker(id int, jobs <-chan int, results chan<- error, partnerID int, partne
 			var err error
 			accessToken, refreshToken, err = getAccessToken(code, partnerID, partnerKey, shopID)
 			if err != nil {
-				logMessage("Worker %d: Error getting shop level token for shopID %d (alias: %s): %v\n", id, shopID, alias, err)
+				logMessage("Worker %d: Error getting shop level token for shopID %d (alias: %s): %v", id, shopID, alias, err)
 				results <- err
 				continue
 			}
@@ -371,7 +375,7 @@ func worker(id int, jobs <-chan int, results chan<- error, partnerID int, partne
 			}
 			err = writeTokensToDB(db, tokens)
 			if err != nil {
-				logMessage("Worker %d: Error writing tokens to DB for shopID %d (alias: %s): %v\n", id, shopID, alias, err)
+				logMessage("Worker %d: Error writing tokens to DB for shopID %d (alias: %s): %v", id, shopID, alias, err)
 				results <- err
 				continue
 			}
@@ -380,12 +384,12 @@ func worker(id int, jobs <-chan int, results chan<- error, partnerID int, partne
 		// Melakukan boost item
 		response, err := boostItem(shopID, partnerID, partnerKey, accessToken, itemIDList)
 		if err != nil {
-			logMessage("Worker %d: Error boosting item for shopID %d (alias: %s): %v\n", id, shopID, alias, err)
+			logMessage("Worker %d: Error boosting item for shopID %d (alias: %s): %v", id, shopID, alias, err)
 			results <- err
 			continue
 		}
 
-		logMessage("Response for shopID %d: %v\n", shopID, response)
+		logMessage("Response for shopID %d: %v", shopID, response)
 
 		// if response["error"] != nil && response["error"] == "product.error_param" && strings.Contains(response["message"].(string), "invalid field ItemIdList: value must Not Null") {
 		// if response["error"] != "" {
@@ -394,7 +398,7 @@ func worker(id int, jobs <-chan int, results chan<- error, partnerID int, partne
 			// Memperbarui access token shop level jika diperlukan
 			newAccessToken, newRefreshToken, err := refreshAccessToken(shopID, partnerID, partnerKey, refreshToken)
 			if err != nil {
-				logMessage("Worker %d: Error refreshing shop level token for shopID %d (alias: %s): %v\n", id, shopID, alias, err)
+				logMessage("Worker %d: Error refreshing shop level token for shopID %d (alias: %s): %v", id, shopID, alias, err)
 				results <- err
 				continue
 			}
@@ -404,12 +408,12 @@ func worker(id int, jobs <-chan int, results chan<- error, partnerID int, partne
 			// Melakukan boost item dengan access token yang baru
 			response, err := boostItem(shopID, partnerID, partnerKey, newAccessToken, itemIDList)
 			if err != nil {
-				logMessage("Worker %d: Error boosting item with new access token for shopID %d (alias: %s): %v\n", id, shopID, alias, err)
+				logMessage("Worker %d: Error boosting item with new access token for shopID %d (alias: %s): %v", id, shopID, alias, err)
 				results <- err
 				continue
 			}
 
-			logMessage("Response for shopID %d with new access token: %v\n", shopID, response)
+			logMessage("Response for shopID %d with new access token: %v", shopID, response)
 		}
 
 		results <- nil
@@ -421,14 +425,14 @@ func boostItemsPeriodically() {
 		// Membaca konfigurasi boost dari file
 		shopItems, err := readBoostConfig("boost.ini")
 		if err != nil {
-			logMessage("Error reading boost config: %v\n", err)
+			logMessage("Error reading boost config: %v", err)
 			return
 		}
 
 		// Menghubungkan ke database Firebird
 		db, err := sql.Open("firebirdsql", firebirdDSN)
 		if err != nil {
-			logMessage("Error connecting to Firebird: %v\n", err)
+			logMessage("Error connecting to Firebird: %v", err)
 			return
 		}
 		defer db.Close()
@@ -436,7 +440,7 @@ func boostItemsPeriodically() {
 		// Membaca token dari database
 		tokens, err := readTokensFromDB(db)
 		if err != nil {
-			logMessage("Error reading tokens from DB: %v\n", err)
+			logMessage("Error reading tokens from DB: %v", err)
 			return
 		}
 
@@ -468,12 +472,12 @@ func boostItemsPeriodically() {
 
 		// Menyimpan token ke database
 		if err := writeTokensToDB(db, tokens); err != nil {
-			logMessage("Error writing tokens to DB: %v\n", err)
+			logMessage("Error writing tokens to DB: %v", err)
 		}
 
 		// logMessage("Boosting completed. Waiting for the next interval...\n")
 		// time.Sleep(boostInterval)
-		logMessage("Boosting completed.")
+		logMessage("Boosting completed.\n")
 		logMessage("Waiting for the next interval...")
 
 		for remaining := boostInterval; remaining > 0; remaining -= time.Second {
