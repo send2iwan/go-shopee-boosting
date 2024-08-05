@@ -105,7 +105,7 @@ func readBoostConfig(filename string) (map[int][]int64, error) {
 
 		parts := strings.Split(line, "=")
 		if len(parts) != 2 {
-			return nil, fmt.Errorf("Invalid format in config file")
+			return nil, fmt.Errorf("invalid format in config file")
 		}
 
 		shopID, err := strconv.Atoi(strings.TrimSpace(parts[0]))
@@ -158,7 +158,7 @@ func readTokensFromDB(db *sql.DB) (map[int]map[string]string, error) {
 		}
 		shopID, ok := aliasToShopID[shopAlias]
 		if !ok {
-			return nil, fmt.Errorf("Unknown shop alias: %s", shopAlias)
+			return nil, fmt.Errorf("unknown shop alias: %s", shopAlias)
 		}
 		tokens[shopID] = map[string]string{
 			"accessToken":  accessToken,
@@ -216,39 +216,39 @@ func getAccessToken(code string, partnerID int, partnerKey string, shopID int) (
 
 	jsonData, err := json.Marshal(body)
 	if err != nil {
-		return "", "", fmt.Errorf("Error marshalling JSON: %v", err)
+		return "", "", fmt.Errorf("error marshalling JSON: %v", err)
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		return "", "", fmt.Errorf("Error creating request: %v", err)
+		return "", "", fmt.Errorf("error creating request: %v", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{Timeout: time.Second * 10}
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", "", fmt.Errorf("Error making request: %v", err)
+		return "", "", fmt.Errorf("error making request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", "", fmt.Errorf("Request failed with status: %v", resp.Status)
+		return "", "", fmt.Errorf("request failed with status: %v", resp.Status)
 	}
 
 	var result map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return "", "", fmt.Errorf("Error decoding response: %v", err)
+		return "", "", fmt.Errorf("error decoding response: %v", err)
 	}
 
 	accessToken, ok := result["access_token"].(string)
 	if !ok {
-		return "", "", fmt.Errorf("Error getting access token from response")
+		return "", "", fmt.Errorf("error getting access token from response")
 	}
 
 	newRefreshToken, ok := result["refresh_token"].(string)
 	if !ok {
-		return "", "", fmt.Errorf("Error getting refresh token from response")
+		return "", "", fmt.Errorf("error getting refresh token from response")
 	}
 
 	return accessToken, newRefreshToken, nil
@@ -269,46 +269,46 @@ func refreshAccessToken(shopID, partnerID int, partnerKey, refreshToken string) 
 
 	jsonData, err := json.Marshal(body)
 	if err != nil {
-		return "", "", fmt.Errorf("Error marshalling JSON: %v", err)
+		return "", "", fmt.Errorf("error marshalling JSON: %v", err)
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		return "", "", fmt.Errorf("Error creating request: %v", err)
+		return "", "", fmt.Errorf("error creating request: %v", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{Timeout: time.Second * 10}
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", "", fmt.Errorf("Error making request: %v", err)
+		return "", "", fmt.Errorf("error making request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", "", fmt.Errorf("Request failed with status: %v", resp.Status)
+		return "", "", fmt.Errorf("request failed with status: %v", resp.Status)
 	}
 
 	var result map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return "", "", fmt.Errorf("Error decoding response: %v", err)
+		return "", "", fmt.Errorf("error decoding response: %v", err)
 	}
 
 	accessToken, ok := result["access_token"].(string)
 	if !ok {
-		return "", "", fmt.Errorf("Error getting access token from response")
+		return "", "", fmt.Errorf("error getting access token from response")
 	}
 
 	newRefreshToken, ok := result["refresh_token"].(string)
 	if !ok {
-		return "", "", fmt.Errorf("Error getting refresh token from response")
+		return "", "", fmt.Errorf("error getting refresh token from response")
 	}
 
 	return accessToken, newRefreshToken, nil
 }
 
 // Fungsi untuk melakukan boost item
-func boostItem(shopID, partnerID int, partnerKey, accessToken string, itemIDList []int64) (map[string]interface{}, error) {
+func boostItem(shopID, partnerID int, accessToken string, itemIDList []int64) (map[string]interface{}, error) {
 	timest := time.Now().Unix()
 	path := "/api/v2/product/boost_item"
 	sign := generateSign4Shop(partnerID, path, timest, accessToken, shopID)
@@ -319,29 +319,29 @@ func boostItem(shopID, partnerID int, partnerKey, accessToken string, itemIDList
 	}
 	jsonData, err := json.Marshal(body)
 	if err != nil {
-		return nil, fmt.Errorf("Error marshalling JSON: %v", err)
+		return nil, fmt.Errorf("error marshalling JSON: %v", err)
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		return nil, fmt.Errorf("Error creating request: %v", err)
+		return nil, fmt.Errorf("error creating request: %v", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{Timeout: time.Second * 10}
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("Error making request: %v", err)
+		return nil, fmt.Errorf("error making request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Request failed with status: %v", resp.Status)
+		return nil, fmt.Errorf("request failed with status: %v", resp.Status)
 	}
 
 	var responseBody map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&responseBody); err != nil {
-		return nil, fmt.Errorf("Error decoding response: %v", err)
+		return nil, fmt.Errorf("error decoding response: %v", err)
 	}
 
 	return responseBody, nil
@@ -382,7 +382,7 @@ func worker(id int, jobs <-chan int, results chan<- error, partnerID int, partne
 		}
 
 		// Melakukan boost item
-		response, err := boostItem(shopID, partnerID, partnerKey, accessToken, itemIDList)
+		response, err := boostItem(shopID, partnerID, accessToken, itemIDList)
 		if err != nil {
 			logMessage("Worker %d: Error boosting item for shopID %d (alias: %s): %v", id, shopID, alias, err)
 			results <- err
@@ -406,7 +406,7 @@ func worker(id int, jobs <-chan int, results chan<- error, partnerID int, partne
 			tokens[shopID]["refreshToken"] = newRefreshToken
 
 			// Melakukan boost item dengan access token yang baru
-			response, err := boostItem(shopID, partnerID, partnerKey, newAccessToken, itemIDList)
+			response, err := boostItem(shopID, partnerID, newAccessToken, itemIDList)
 			if err != nil {
 				logMessage("Worker %d: Error boosting item with new access token for shopID %d (alias: %s): %v", id, shopID, alias, err)
 				results <- err
